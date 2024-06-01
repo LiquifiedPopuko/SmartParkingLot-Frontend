@@ -2,10 +2,12 @@
 import axios from "axios";
 import Navbar from "../components/Navbar"
 import TableListEntranceExit from "../components/TableListEntranceExit"
-import { useEffect } from "react";
+import { useEffect, useNavigate } from "react";
 
 
 function EntranceExitPage(){
+
+  const navigate = useNavigate();
     
     useEffect(() => {
         const getUsers = async () => {
@@ -13,7 +15,7 @@ function EntranceExitPage(){
               const authToken = localStorage.getItem("token");
               if (!authToken) {
                 // Redirect to login page if token is missing
-                window.location = "/login";
+                navigate("/login")
                 return;
               }
               const response = await axios.get("http://13.214.18.38:8000/api/auth", {
@@ -29,11 +31,11 @@ function EntranceExitPage(){
               if (error.response && error.response.status === 401) {
                 // Token is invalid or expired, remove token from localStorage and redirect to login page
                 localStorage.removeItem("token");
-                window.location = "/login";
+                navigate("/login")
               } else {
                 // Other error occurred, log it
                 localStorage.removeItem("token");
-                window.location = "/login";
+                navigate("/login")
                 console.error("Error fetching user data:", error);
               }
             }

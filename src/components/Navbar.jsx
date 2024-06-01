@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useLocation } from 'react-router-dom'; // Import useLocation from react-router-dom
+import { useNavigate } from 'react-router-dom'; // Import useLocation from react-router-dom
 
 const navigation = [
   { name: 'Cars Chart', href: '/admin', current: false },
@@ -16,7 +16,7 @@ function classNames(...classes) {
 
 function Navbar() {
   const [currentRoute, setCurrentRoute] = useState('');
-  const location = useLocation();  
+  const navigate = useNavigate();  
 
   useEffect(() => {
     setCurrentRoute(location.pathname); 
@@ -24,7 +24,7 @@ function Navbar() {
 
   const logout = () => {
     localStorage.removeItem("token");
-    window.location = "/login";
+    navigate("/login")
     console.log("logout la");
   }
 

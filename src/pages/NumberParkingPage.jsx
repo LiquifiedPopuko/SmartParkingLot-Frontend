@@ -43,7 +43,7 @@ function NumberParkingPage()
           
     
         getUsers();
-      }, []);
+      }, [navigate]);
     return(
         <>
            <Navbar/>

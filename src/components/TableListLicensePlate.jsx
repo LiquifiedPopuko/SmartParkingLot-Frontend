@@ -199,7 +199,7 @@ function TableListLicensePlate() {
                 fontSize: "14px",
                 color: "#333",
                 textAlign: "center",
-                borderRight: "none", // นำออกเส้นขอบทางขวาของเซลล์สุดท้าย
+                borderRight: "none", // remove the right border of the last cell
             },
         },
     };

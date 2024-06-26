@@ -20,8 +20,8 @@ function CarsChart() {
   ]);
 
   const [avgCars, setAvgCars] = useState(0);
-  const [maxCarsHours, setMaxCarsHours] = useState([]);
-  const [minCarsHours, setMinCarsHours] = useState([]);
+  const [maxCarsHours, setMaxCarsHours] = useState(["-"]);
+  const [minCarsHours, setMinCarsHours] = useState(["-"]);
   const [optionList, setOptionList] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [allHours, setAllHours] = useState([]);
@@ -104,7 +104,7 @@ function CarsChart() {
     >
       Select Date
     </button>
-    <div className="mb-5 mt-5">
+    <div className="mt-5 p-5 border-t border-gray-200">
       <h1 className="text-lg font-bold mb-2 text-gray-800">
         Average cars today: <span className="text-blue-500">{avgCars}</span>
         </h1>

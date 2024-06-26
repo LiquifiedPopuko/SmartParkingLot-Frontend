@@ -19,10 +19,10 @@ function EntranceExitPage() {
         const response = await axios.get("http://13.214.18.38:8000/api/auth", {
           headers: {
             Authorization: `Bearer ${authToken}` // Fix: Added space after 'Bearer'
-          }
+          } 
         });
         console.log("user data", response.data);
-        console.log(authToken);
+        // console.log(authToken);
       } catch (error) {
         // Handle errors
         console.log("error", error);

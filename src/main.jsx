@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import UserDashboard from './pages/UserDashboard.jsx';
 import NumberParkingPage from './pages/NumberParkingPage.jsx';
 import NumberCarsPage from './pages/NumberCarsPage.jsx';
+import HowToUsePage from './pages/HowToUsePage.jsx';
 
 import './index.css'
 
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <App />,
   },{
     path: "/",
-    element: <UserDashboard />
+    element: <HowToUsePage />
   },{
     path: "/login",
     element: <LoginPage />

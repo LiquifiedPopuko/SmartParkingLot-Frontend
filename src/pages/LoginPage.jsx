@@ -27,8 +27,8 @@ const LoginPage = () => {
             localStorage.setItem('token', response.data.token);
             navigate('/admin');
 
-            console.log(username, password);
-            console.log(response.data.token);
+            // console.log(username, password);
+            // console.log(response.data.token);
         } catch (error) {
             alert("Your username or password is incorrect!");
             console.log('error', error);

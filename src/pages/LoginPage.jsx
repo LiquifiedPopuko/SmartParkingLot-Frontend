@@ -6,6 +6,7 @@ const LoginPage = () => {
     
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +17,7 @@ const LoginPage = () => {
         }
     }, [navigate]);
 
-    const login = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault(); // Prevent the default form submission
         try {
             const response = await axios.post('http://13.214.18.38:8000/api/login', {
@@ -30,8 +31,8 @@ const LoginPage = () => {
             // console.log(username, password);
             // console.log(response.data.token);
         } catch (error) {
-            alert("Your username or password is incorrect!");
-            console.log('error', error);
+            setError("Your username or password is incorrect!");
+            console.log('error', error)
         }
     };
 
@@ -43,7 +44,7 @@ const LoginPage = () => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-[#2A3990] md:text-2xl">
                             Sign in to go to the admin page
                         </h1>
-                        <form onSubmit={login}>
+                        <form onSubmit={handleLogin}>
                             <div>
                                 <label htmlFor="username" className="block mb-2 text-sm font-medium text-[#2A3990]">
                                     Username
@@ -74,6 +75,7 @@ const LoginPage = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
+                            {error && <div role="alert" className="text-red-600 mt-5">{error}</div>}
                             <button
                                 type="submit"
                                 className="w-full text-white bg-[#2A3990] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-5"

@@ -14,9 +14,8 @@ function AddLicensePlate({ isVisible, onClose, fetchData }) {
     useEffect(() => {
         axios.get("http://13.214.18.38:8000/api/province")
             .then((response) => {
-                console.log("Provinces fetched:", response.data.users);
-                setProvinces(response.data.users);
-                
+                console.log("Provinces fetched:", response.data.result);
+                setProvinces(response.data.result); // Updated to match the response structure
             })
             .catch((error) => {
                 console.error("Error fetching provinces:", error);
@@ -60,7 +59,6 @@ function AddLicensePlate({ isVisible, onClose, fetchData }) {
                 }
             });
     };
-    
 
     if (!isVisible) return null;
 
@@ -98,14 +96,18 @@ function AddLicensePlate({ isVisible, onClose, fetchData }) {
                                             <label className="block text-sm font-medium text-gray-700">Province</label>
                                             <select name="province_id" value={formData.province_id} onChange={handleInputChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" required>
                                                 <option value="">Select a province</option>
-                                                {provinces.map(province => (
-                                                    <option key={province.id} value={province.id}>{province.province}</option>
-                                                ))}
+                                                {provinces.length > 0 ? (
+                                                    provinces.map(province => (
+                                                        <option key={province.id} value={province.id}>{province.province}</option>
+                                                    ))
+                                                ) : (
+                                                    <option value="" disabled>No provinces available</option>
+                                                )}
                                             </select>
                                         </div>
                                         <div className="mt-4 flex justify-end">
                                             <button type="submit" className="bg-green-500 hover:bg-blue-700 text-white py-2 px-4 rounded">Add</button>
-                                            <button type="button" onClick={onClose} className=" hover:bg-gray-700 hover:text-white hover:border-white text-gray-500 border-solid border-2 border-gray-500 py-2 px-4 rounded ml-2">Cancel</button>
+                                            <button type="button" onClick={onClose} className="hover:bg-gray-700 hover:text-white hover:border-white text-gray-500 border-solid border-2 border-gray-500 py-2 px-4 rounded ml-2">Cancel</button>
                                         </div>
                                     </form>
                                 </div>

@@ -11,29 +11,29 @@ const columns = [
   },
   {
     name: "Busy spots",
-    selector: (row) => row.amountSpaces,
+    selector: (row) => row.busySpots,
     sortable: true,
   },
   {
     name: "Total spots",
-    selector: (row) => row.totalSpaces,
+    selector: (row) => row.totalSpots,
     sortable: true,
   },
   {
     name: "Images",
     cell: (row) => (
-      <a href={row.imageParking} target="_blank" className="text-blue-700">
+      <a href={row.imageSource} target="_blank" className="text-blue-700">
         Images
       </a>
     ),
-    selector: (row) => row.imageParking,
+    selector: (row) => row.imageSource,
   },
 ];
 
 const downloadCSV = (data) => {
   const csvContent = [
     ["Times", "Busy spots", "Total spots", "Image"],
-    ...data.map((row) => [row.times, row.amountSpaces, row.totalSpaces, row.imageParking]),
+    ...data.map((row) => [row.times, row.busySpots, row.totalSpots, row.imageSource]),
   ]
     .map((e) => e.join(","))
     .join("\n");
@@ -72,7 +72,7 @@ function TableListParkingSpace() {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:3000/days")
+      .get("http://localhost:8000/api/detection")
       .then((response) => {
         const result = response.data;
         setOptionList(result);
@@ -97,43 +97,48 @@ function TableListParkingSpace() {
 
   const handleButtonClick = () => {
     if (selectedDate) {
-      const selectedDateObject = optionList.find((day) => day.date === selectedDate);
-      if (selectedDateObject) {
-        const selectedParkingData = selectedDateObject.parkings || [];
-        setData(selectedParkingData);
+      const selectedData = optionList.filter(
+        (entry) => entry.detection_date.substring(0, 10) === selectedDate
+      );
 
-        // Calculate average busy spots, max busy spot time, and min busy spot time
-        const totalBusySpots = selectedParkingData.reduce(
-          (total, entry) => total + entry.amountSpaces,
-          0
-        );
-        const averageBusySpots = totalBusySpots / selectedParkingData.length;
+      const processedData = selectedData.map((entry) => {
+        const time = entry.detection_date.substring(11, 16); // Extract HH:MM from detection_date
+        return {
+          times: time,
+          busySpots: entry.no_of_cars,
+          totalSpots: entry.no_of_empty,
+          imageSource: entry.image_source,
+        };
+      });
 
-        let maxBusySpot = -Infinity;
-        let minBusySpot = Infinity;
-        let maxTime = "";
-        let minTime = "";
+      setData(processedData);
 
-        selectedParkingData.forEach((entry) => {
-          if (entry.amountSpaces > maxBusySpot) {
-            maxBusySpot = entry.amountSpaces;
-            maxTime = entry.times;
-          }
-          if (entry.amountSpaces < minBusySpot) {
-            minBusySpot = entry.amountSpaces;
-            minTime = entry.times;
-          }
-        });
+      // Calculate average busy spots, max busy spot time, and min busy spot time
+      const totalBusySpots = processedData.reduce(
+        (total, entry) => total + entry.busySpots,
+        0
+      );
+      const averageBusySpots = totalBusySpots / processedData.length;
 
-        setAvgBusySpots(averageBusySpots);
-        setMaxBusySpotTime(maxTime);
-        setMinBusySpotTime(minTime);
-      } else {
-        setData([]);
-        setAvgBusySpots(0);
-        setMaxBusySpotTime("-");
-        setMinBusySpotTime("-");
-      }
+      let maxBusySpot = -Infinity;
+      let minBusySpot = Infinity;
+      let maxTime = "";
+      let minTime = "";
+
+      processedData.forEach((entry) => {
+        if (entry.busySpots > maxBusySpot) {
+          maxBusySpot = entry.busySpots;
+          maxTime = entry.times;
+        }
+        if (entry.busySpots < minBusySpot) {
+          minBusySpot = entry.busySpots;
+          minTime = entry.times;
+        }
+      });
+
+      setAvgBusySpots(averageBusySpots);
+      setMaxBusySpotTime(maxTime);
+      setMinBusySpotTime(minTime);
     } else {
       setData([]);
       setAvgBusySpots(0);
@@ -145,8 +150,8 @@ function TableListParkingSpace() {
   const handleFilter = (e) => {
     const filterData = recordData.filter((row) =>
       row.times.toLowerCase().includes(e.target.value.toLowerCase()) ||
-      row.amountSpaces.toString().includes(e.target.value) ||
-      row.totalSpaces.toString().includes(e.target.value)
+      row.busySpots.toString().includes(e.target.value) ||
+      row.totalSpots.toString().includes(e.target.value)
     );
     setData(filterData);
   };

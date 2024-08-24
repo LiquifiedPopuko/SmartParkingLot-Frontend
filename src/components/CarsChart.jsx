@@ -25,10 +25,9 @@ function CarsChart() {
   const [optionList, setOptionList] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
 
-
   const fetchData = () => {
     axios
-      .get("http://localhost:3000/days")
+      .get("http://localhost:8000/api/detection")
       .then((response) => {
         const result = response.data;
         setOptionList(result);
@@ -51,12 +50,25 @@ function CarsChart() {
 
   const handleButtonClick = () => {
     if (selectedDate) {
-      const selectedDateObject = optionList.find((day) => day.date === selectedDate);
-      if (selectedDateObject) {
-        const selectedHoursData = selectedDateObject.hours || [];
+      const selectedDateObject = optionList.filter(
+        (day) => day.detection_date.split("T")[0] === selectedDate
+      );
 
-        const hours = selectedHoursData.map((entry) => entry.hour);
-        const cars = selectedHoursData.map((entry) => entry.amountCars);
+      if (selectedDateObject.length > 0) {
+        const hourlyData = {};
+
+        selectedDateObject.forEach((entry) => {
+          // Extract the hour portion directly from the string without any date conversion
+          const hour = entry.detection_date.split("T")[1].substring(0, 2) + ":00";
+          if (!hourlyData[hour]) {
+            hourlyData[hour] = 0;
+          }
+          hourlyData[hour] += entry.no_of_cars;
+        });
+
+        const hours = Object.keys(hourlyData);
+        const cars = Object.values(hourlyData);
+
         setOption({
           chart: {
             id: "basic-bar"
@@ -65,6 +77,7 @@ function CarsChart() {
             categories: hours
           }
         });
+
         setSerie([
           {
             name: "cars",
@@ -121,9 +134,7 @@ function CarsChart() {
             <div className="mt-5 p-5 border-t border-gray-200">
               <h2 className="text-lg font-bold mb-2 text-gray-800">
                 Average cars today:{" "}
-                <span className="text-blue-500">
-                  {avgCars.toFixed(2)}
-                </span>
+                <span className="text-blue-500">{avgCars.toFixed(2)}</span>
               </h2>
               <p className="text-lg font-bold mb-2 text-gray-800">
                 Most cars at:{" "}

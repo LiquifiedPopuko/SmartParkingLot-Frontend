@@ -27,7 +27,7 @@ function CarsChart() {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:8000/api/detection")
+      .get("http://13.214.18.38:8000/api/detection")
       .then((response) => {
         const result = response.data;
         setOptionList(result);

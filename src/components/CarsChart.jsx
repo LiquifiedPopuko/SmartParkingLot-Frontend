@@ -53,10 +53,10 @@ function CarsChart() {
       const selectedDateObject = optionList.filter(
         (day) => day.detection_date.split("T")[0] === selectedDate
       );
-
+  
       if (selectedDateObject.length > 0) {
         const hourlyData = {};
-
+  
         selectedDateObject.forEach((entry) => {
           // Extract the hour portion directly from the string without any date conversion
           const hour = entry.detection_date.split("T")[1].substring(0, 2) + ":00";
@@ -65,10 +65,11 @@ function CarsChart() {
           }
           hourlyData[hour] += entry.no_of_cars;
         });
-
-        const hours = Object.keys(hourlyData);
-        const cars = Object.values(hourlyData);
-
+  
+        // Get sorted hours
+        const hours = Object.keys(hourlyData).sort((a, b) => a.localeCompare(b));
+        const cars = hours.map((hour) => hourlyData[hour]);
+  
         setOption({
           chart: {
             id: "basic-bar"
@@ -77,22 +78,22 @@ function CarsChart() {
             categories: hours
           }
         });
-
+  
         setSerie([
           {
             name: "cars",
             data: cars
           }
         ]);
-
+  
         const totalCars = cars.reduce((total, amount) => total + amount, 0);
         const averageCars = totalCars / cars.length;
-
+  
         const maxCars = Math.max(...cars);
         const minCars = Math.min(...cars);
         const maxTimes = hours.filter((hour, index) => cars[index] === maxCars);
         const minTimes = hours.filter((hour, index) => cars[index] === minCars);
-
+  
         setAvgCars(averageCars);
         setMaxCarsHours(maxTimes.join(", "));
         setMinCarsHours(minTimes.join(", "));
@@ -107,6 +108,7 @@ function CarsChart() {
       setMinCarsHours("-");
     }
   };
+  
 
   return (
     <>

@@ -20,7 +20,7 @@ const LoginPage = () => {
     const handleLogin = async (event) => {
         event.preventDefault(); // Prevent the default form submission
         try {
-            const response = await axios.post('http://13.214.18.38:8000/api/login', {
+            const response = await axios.post('https://10.0.28.18:8001/api/login', {
                 username,
                 password
             });

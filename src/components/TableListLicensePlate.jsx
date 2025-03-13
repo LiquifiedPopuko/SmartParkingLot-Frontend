@@ -14,7 +14,7 @@ const handleButtonClick = (id, fetchData) => {
 
   console.log("Deleting license plate with ID:", id);
   axios
-    .delete(`http://13.214.18.38:8000/api/deleteLicense/${id}`)
+    .delete(`https://10.0.28.18:8001/api/deleteLicense/${id}`)
     .then((response) => {
       console.log(response.data.message);
       fetchData(); // Fetch data after deleting to refresh the table
@@ -95,7 +95,7 @@ function TableListLicensePlate() {
 
   const fetchData = () => {
     axios
-      .get("http://13.214.18.38:8000/api/licensePlates")
+      .get("https://10.0.28.18:8001/api/licensePlates")
       .then((response) => {
         const result = response.data;
         setData(result);
@@ -132,7 +132,7 @@ function TableListLicensePlate() {
   const deleteAll = () => {
     if (window.confirm(`Are you sure you want to delete selected items?`)) {
       const deleteRequests = selectedRows.map((row) =>
-        axios.delete(`http://13.214.18.38:8000/api/deleteLicense/${row.id}`)
+        axios.delete(`https://10.0.28.18:8001/api/deleteLicense/${row.id}`)
       );
 
       Promise.all(deleteRequests)

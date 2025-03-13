@@ -20,7 +20,7 @@ const HowToUsePage = () => {
             navigate("/login")
             return;
           }
-          const response = await axios.get("http://13.214.18.38:8000/api/auth", {
+          const response = await axios.get("https://10.0.28.18:8001/api/auth", {
             headers: {
               Authorization: `Bearer ${authToken}` // Fix: Added space after 'Bearer'
             }

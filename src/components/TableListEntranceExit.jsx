@@ -99,7 +99,7 @@ function TableListEntranceExit() {
 
   const fetchHistoryData = useCallback(() => {
     axios
-      .get("http://13.214.18.38:8000/api/history")
+      .get("https://10.0.28.18:8001/api/history")
       .then((response) => {
         setData(response.data);
         if (!searchTerm) {
@@ -115,7 +115,7 @@ function TableListEntranceExit() {
 
   const fetchLicenseData = useCallback(() => {
     axios
-      .get("http://13.214.18.38:8000/api/licensePlates")
+      .get("https://10.0.28.18:8001/api/licensePlates")
       .then((response) => {
         setLicenses(response.data);
       })
@@ -126,7 +126,7 @@ function TableListEntranceExit() {
 
   const fetchUnknownData = useCallback(() => {
     axios
-      .get("http://13.214.18.38:8000/api/getAllUnknown")
+      .get("https://10.0.28.18:8001/api/getAllUnknown")
       .then((response) => {
         setUnknownData(response.data);
       })

@@ -12,7 +12,7 @@ function AddLicensePlate({ isVisible, onClose, fetchData }) {
     const [provinces, setProvinces] = useState([]);
 
     useEffect(() => {
-        axios.get("http://13.214.18.38:8000/api/province")
+        axios.get("https://10.0.28.18:8001/api/province")
             .then((response) => {
                 console.log("Provinces fetched:", response.data.result);
                 setProvinces(response.data.result); // Updated to match the response structure
@@ -36,7 +36,7 @@ function AddLicensePlate({ isVisible, onClose, fetchData }) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://13.214.18.38:8000/api/addLicense', formData)
+        axios.post('https://10.0.28.18:8001/api/addLicense', formData)
             .then((response) => {
                 console.log(response.data.message);
                 onClose();
